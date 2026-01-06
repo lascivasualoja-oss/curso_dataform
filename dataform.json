@@ -1,0 +1,6 @@
+{
+  "defaultSchema": "curso_dataform",
+  "warehouse": "bigquery",
+  "defaultDatabase": "winged-helper-480913-h6",
+  "defaultLocation": "US"
+}
