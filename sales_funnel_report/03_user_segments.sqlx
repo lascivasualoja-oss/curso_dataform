@@ -1,0 +1,31 @@
+config {
+    "type": "view",
+    "name": "user_segments",
+    "tags": ["sales_funnel_report"],
+    "description": "User profile enrichment with segmentation based on age, gender and acquisition channel"
+}
+
+WITH users_filtered AS (
+    SELECT  
+        id AS user_id,
+        gender,
+        SAFE_CAST(age AS INT64) AS age,
+        traffic_source,
+        created_at
+    FROM ${ref{"users}}
+    WHERE created_at >= '2024-06-01'
+)
+
+SELECT 
+    user_id,
+    gender,
+    traffic_source,
+    age,
+    CASE 
+        WHEN age >= 18 and age <= 25 THEN '18-25'
+        WHEN age >= 26 and age <= 35 THEN '26-35'
+        WHEN age >= 36 and age < 50 THEN '36-50'
+        WHEN age >= 50 THEN '50+'
+        ELSE 'unknown'
+    END as age_band
+FROM users_filtered
